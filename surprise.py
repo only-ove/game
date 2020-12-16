@@ -127,6 +127,8 @@ def get_text():
 def set_font(text):
     font_name = pygame.font.match_font("Songti")
     print(font_name)
+    if not font_name:
+        font_name = pygame.font.match_font("隶书")
     font_object = pygame.font.Font(font_name, 90)
     # font_object.set_bold(True)
     font_object.set_italic(True)
