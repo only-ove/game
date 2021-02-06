@@ -19,6 +19,11 @@ FPS = 60
 MUSIC_PLAYING = False
 MOVIE_PLAYING = False
 
+# 当前路径
+# current_dir = os.path.dirname(os.path.realpath(sys.executable))
+current_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+# current_dir = os.path.dirname(sys.argv[0])
+
 
 def read_image_randomly(image_list):
     # file_names = os.listdir(IMAGEDIR)
@@ -44,7 +49,7 @@ def play_music(music_list):
 def get_music_image_list():
     music_list = []
     image_list = []
-    current_dir = os.getcwd()
+    # current_dir = "."
     all_files = [f for f in os.listdir(current_dir)]
     for f in all_files:
         f = os.path.join(current_dir, f)
@@ -68,7 +73,7 @@ def add_image_or_music_list(f, music_list, image_list):
 
 
 def get_love():
-    current_dir = os.getcwd()
+    # current_dir ="."
     all_files = [f for f in os.listdir(current_dir)]
     love_image_dict = {}
     for f in all_files:
@@ -104,7 +109,7 @@ def get_love():
 
 
 def get_text():
-    current_dir = os.getcwd()
+    # current_dir = "."
     all_files = [f for f in os.listdir(current_dir)]
     text_list = []
     text_files_list = []
@@ -126,9 +131,31 @@ def get_text():
 
 def set_font(text):
     font_name = pygame.font.match_font("Songti")
+    print("set_font")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("隶书")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("新宋体")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("宋体")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("微软雅黑")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("黑体")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("等线")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("幼圆")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("仿宋")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("楷体")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("华文宋体")
+    # if not font_name:
+    #     font_name = pygame.font.match_font("华文细黑")
+    font_name = os.path.join(current_dir, "SIMLI.TTF")
     print(font_name)
-    if not font_name:
-        font_name = pygame.font.match_font("隶书")
     font_object = pygame.font.Font(font_name, 90)
     # font_object.set_bold(True)
     font_object.set_italic(True)
@@ -138,6 +165,7 @@ def set_font(text):
 
 
 def main():
+    print("current_dir: {}".format(current_dir))
     pygame.init()
     clock = pygame.time.Clock()
     music_list, image_list = get_music_image_list()
@@ -161,7 +189,10 @@ def main():
         image_used = set_font("start")
     else:
         surface.fill(GRAY)
-        image_used = read_image_randomly(image_list)
+        if len(image_list) < 0:
+            image_used = set_font("请添加刮奖内容")
+        else:
+            image_used = read_image_randomly(image_list)
     n = 0
     while True:
         key_list = pygame.key.get_pressed()
@@ -180,18 +211,20 @@ def main():
             if current_i_image > 0:
                 if pygame.mixer.music.get_busy():
                     pygame.mixer.music.stop()
-                continue
-            print(i_image_list)
-            current_i_image = current_i_image + 1
-            for i_image in i_image_list:
-                image = pygame.image.load(i_image)
-                image_used = pygame.transform.scale(image, SCREENSIZE)
-                screen.blit(image_used, (0, 0))
-                pygame.display.update()
-                clock.tick(FPS)
-                time.sleep(10)
-                if current_i_image == len(i_image_list):
-                    break
+                # continue
+            # print(i_image_list)
+            # for i_image in i_image_list:
+            #     current_i_image = current_i_image + 1
+            #     image = pygame.image.load(i_image)
+            #     image_used = pygame.transform.scale(image, SCREENSIZE)
+            #     screen.blit(image_used, (0, 0))
+            #     pygame.display.update()
+            #     # clock.tick(FPS)
+            #     time.sleep(0.8)
+            #     if current_i_image == len(i_image_list):
+            #         if pygame.mixer.music.get_busy():
+            #             pygame.mixer.music.stop()
+            #         break
         elif love_image_dict and key_list[pygame.K_l]:
             l_image_list = love_image_dict["l"]
             l_music_list = love_image_dict["l_music"]
@@ -201,18 +234,20 @@ def main():
             if current_l_image > 0:
                 if pygame.mixer.music.get_busy():
                     pygame.mixer.music.stop()
-                continue
-            print(l_image_list)
-            current_l_image = current_l_image + 1
-            for l_image in l_image_list:
-                image = pygame.image.load(l_image)
-                image_used = pygame.transform.scale(image, SCREENSIZE)
-                screen.blit(image_used, (0, 0))
-                pygame.display.update()
-                clock.tick(FPS)
-                time.sleep(10)
-                if current_l_image == len(l_image_list):
-                    break
+                # continue
+            # print(l_image_list)
+            # for l_image in l_image_list:
+            #     current_l_image = current_l_image + 1
+            #     image = pygame.image.load(l_image)
+            #     image_used = pygame.transform.scale(image, SCREENSIZE)
+            #     screen.blit(image_used, (0, 0))
+            #     pygame.display.update()
+            #     # clock.tick(FPS)
+            #     time.sleep(1.2)
+            #     if current_l_image == len(l_image_list):
+            #         if pygame.mixer.music.get_busy():
+            #             pygame.mixer.music.stop()
+            #         break
         elif love_image_dict and key_list[pygame.K_u]:
             u_image_list = love_image_dict["u"]
             u_music_list = love_image_dict["u_music"]
@@ -222,18 +257,23 @@ def main():
             if current_u_image > 0:
                 if pygame.mixer.music.get_busy():
                     pygame.mixer.music.stop()
-                continue
-            print(u_image_list)
-            current_u_image = current_u_image + 1
-            for u_image in u_image_list:
-                image = pygame.image.load(u_image)
-                image_used = pygame.transform.scale(image, SCREENSIZE)
-                screen.blit(image_used, (0, 0))
-                pygame.display.update()
-                clock.tick(FPS)
-                time.sleep(10)
-                if current_i_image == len(u_image_list):
-                    break
+                # continue
+            # print(u_image_list)
+            # for u_image in u_image_list:
+            #     current_u_image = current_u_image + 1
+            #     image = pygame.image.load(u_image)
+            #     image_used = pygame.transform.scale(image, SCREENSIZE)
+            #     screen.blit(image_used, (0, 0))
+            #     pygame.display.update()
+            #     # clock.tick(FPS)
+            #     time.sleep(1.2)
+            #     if current_u_image == len(u_image_list):
+            #         if pygame.mixer.music.get_busy():
+            #             pygame.mixer.music.stop()
+            #         break
+        elif key_list[pygame.K_s]:
+            if pygame.mixer.music.get_busy():
+                pygame.mixer.music.stop()
         else:
             current_i_image = 0
             current_l_image = 0
